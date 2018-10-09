@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+	<title>View Dealer</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment ::navbar"></nav>
+	
+	<h3 th:text="${dealer.id}"></h3>
+	<h3 th:text="'Alamat: ' + ${dealer.alamat}"></h3>
+	<h3 th:text="'Telepon: ' + ${dealer.noTelp}"></h3>
+	<td><a th:href="@{'/car/add'} + ${dealer.id}">Add Car</a></td>
+	<td><a th:href="@{/}">Home</a></td>
+	
+</body>
+<tbody>
+	<tr th:each="car,itarationStatus: *{listCar}">
+		<td th:text = "${iterationStatus.count}"></td>
+		<td th:text = "${car.brand}"></td>
+		<td th:text = "${car.type}"></td>
+		<td th:if = "${car.price} >= 1000000000">Diatas 1M</td>
+		<td th:unless = "${car.pricec} >= 1000000000">Dibawah 1M</td>
+		<td th:text = "${car.amount}"></td>
+	</tr>
+</tbody>
+
+</html>

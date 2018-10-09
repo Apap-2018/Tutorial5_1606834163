@@ -1,0 +1,35 @@
+no 3.
+Jelaskan perbedaan antara th:include dengan th:replace
+sesuai dengan dokumentasi
+<div th: include = "..."> content here </ div>
+fragmen akan ditempatkan di dalam tag <div>.
+
+Namun ketika Anda menggunakan ganti:
+
+<div th: ganti = "..."> content here </ div>
+kemudian <div> akan digantikan oleh konten.
+
+Thymeleaf dapat memasukkan bagian-bagian dari 
+halaman lain sebagai fragmen (sedangkan JSP 
+hanya menyertakan halaman lengkap) menggunakan 
+th: include (akan menyertakan isi fragmen ke dalam tag 
+host-nya) atau th: replace (akan menggantikan tag host 
+dengan fragmen).
+
+
+penjelasan pengerjaan latihan 1
+
+1) membuat 
+<head th:fragment="title">
+	<title th:text="${title}"></title>
+</head>
+
+agar titel dapat diubah melalui fragment
+
+2) mengganti title di setiap html dengan
+<object th:include="fragments/fragment :: title" th:remove="tag"></object>
+
+agar fragment title dapat digunakan di setiap html
+
+3) memanggil fragmen didalam model dan memasukkan titlenya
+model.addAttribute("title", "Add Dealer");

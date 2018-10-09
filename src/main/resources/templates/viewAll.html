@@ -1,0 +1,42 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org">
+<head>
+		<title>View All Dealer with Car</title>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
+</head>
+
+<body>
+	<nav th:replace="fragments/fragment ::navbar"></nav>
+	
+		<h2 th:text="'List Dealer'"></h2>
+		
+		<hr>
+		<div th:each="dealer : ${listAllDealer}">
+			<h3 th:text="'Id Dealer: ' + ${dealer.id}"></h3>
+			<h3 th:text="'Alamat: ' + ${dealer.alamat}"></h3>
+			<h3 th:text="'Telepon: ' + ${dealer.noTelp}"></h3>
+			
+			<h3 th:text="'List Mobil'"></h3>
+			<table border="2">
+				<div>
+					<tr>
+						<td>Brand</td>
+						<td>Type</td>
+						<td>Price</td>
+						<td>Amount</td>
+					</tr>
+				</div>
+				<div th:each="car : ${dealer.listCar}">
+					<tr>
+						<td th:text="${car.brand}"></td>
+						<td th:text="${car.type}"></td>
+						<td th:text="${car.price}"></td>
+						<td th:text="${car.amount}"></td>
+					</tr>
+				</div>
+			</table>
+			<hr>
+		</div>
+</body>
+</html>
