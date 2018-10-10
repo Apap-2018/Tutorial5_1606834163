@@ -1,28 +1,41 @@
 <!DOCTYPE html>
 <html xmlns:th="http://www.thymeleaf.org">
 <head>
-	<title>Add Car</title>
+	<object th:include="fragments/fragment :: title" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
+	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
 </head>
 
 <body>
+	<nav th:replace="fragments/fragment ::navbar"></nav>
 	<h2>Hello!</h2>
 	
 	<h3>Tambah Mobil</h3>
-	<form th:action ="@{/car/add}" th:object="${car}" method="POST">
-		<input type="hidden" th:field="*{dealer}"/>
-		Brand: <br>
-		<input type = "text" name = "brand"/>
-		<br>
-		Type: <br>
-		<input type="text" name = "type" />
-		<br>
-		Price: <br>
-		<input type="number" name="price"/>
-		<br>
-		Amount: <br>
-		<input type="number" name="amount"/>
-		<br><br>
-		<button type="submit">Submit</button>
-	</form>
+	<form th:action="@{/car/add/} + ${dealer.id}" th:object="${dealer}" method = "POST">
+		<input type="hidden" th:field="*{id}"></input>
+		<table>
+			<thead>
+				<tr>
+					<th>Brand</th>
+					<th>Type</th>
+					<th>Price</th>
+					<th>Amount</th>
+					<th><button type="submit" name="addRow">Add Row</button></th>
+				</tr>
+			</thead>
+			<tbody>
+			<tr th:each="car,rowStat : *{listCar}">
+				<td><input type="text" th:field="*{listCar[__${rowStat.index}__].brand}"/></td>
+				<td><input type="text" th:field="*{listCar[__${rowStat.index}__].type}"/></td>
+				<td><input type="number" th:field="*{listCar[__${rowStat.index}__].price}"/></td>
+				<td><input type="number" th:field="*{listCar[__${rowStat.index}__].amount}"/></td>
+				<td><button type="submit" name="removeRow" th:value="${rowStat.index}">Remove</button></td>
+			</tr>
+			</tbody>
+		</table>
+		<button type="submit" name="save">Submit</button>
+		</form>
+	
 </body>
+
 </html>

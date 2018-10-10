@@ -36,6 +36,7 @@ public class DealerController {
 	private String add(Model model) {
 		model.addAttribute("title", "Add Dealer");
 		model.addAttribute("dealer", new DealerModel());
+		
 		return "addDealer";
 	}
 	

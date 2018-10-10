@@ -1,13 +1,14 @@
 <!DOCTYPE html>
 	<html xmlns:th="http://www.thymeleaf.org">
 
-	<head>
-		<title>View</title>
+<head>
+	<object th:include="fragments/fragment :: title" th:remove="tag"></object>
 	<object th:include="fragments/fragment :: css" th:remove="tag"></object>
 	<object th:include="fragments/fragment :: js" th:remove="tag"></object>
-	</head>
+</head>
 
-	<body>
+<body>
+	<nav th:replace="fragments/fragment ::navbar"></nav>
 	<nav th:replace="fragments/fragment ::navbar"></nav>
 	
 		<h3 th:text="'Dealer'"></h3>
@@ -49,7 +50,7 @@
 			<button type="submit">Hapus yang dipilih</button>
 		</form>
 		<br>
-		<form th:action="@{/car/add} + ${dealer.id}">
+		<form th:action="@{/car/add/} + ${dealer.id}">
 			<button value="submit">Tambah Mobil</button>
 		</form>
 	</body>

@@ -1,5 +1,9 @@
 package com.apap.tutorial5.controller;
 
+import java.util.ArrayList;
+
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -25,26 +29,53 @@ public class CarController {
 	@Autowired
 	private DealerService dealerService;
 	
-	@RequestMapping(value = "/car/add{dealerId}", method = RequestMethod.GET)
-	private String add(@PathVariable(value = "dealerId") Long dealerId, Model model) {
-		CarModel car = new CarModel();
+	@RequestMapping(value = "/car/add/{dealerId}", method = RequestMethod.GET)
+	private String add (@PathVariable(value = "dealerId") Long dealerId, Model model) {
+		
+		
 		DealerModel dealer = dealerService.getDealerDetailById(dealerId).get();
-		car.setDealer(dealer);
+		ArrayList<CarModel> list = new ArrayList<CarModel>();
+		list.add(new CarModel());
+		dealer.setListCar(list);
 		
-		model.addAttribute("car", car);
+		model.addAttribute("title", "Add Car");
+		model.addAttribute("dealer", dealer);
+		return "addCar";
+	}
+	
+	@RequestMapping(value = "/car/add/{dealerId}", method = RequestMethod.POST, params= {"save"})
+	private String addCarSubmit (@ModelAttribute DealerModel dealer, Model model) {
+		DealerModel dealerSkrg = dealerService.getDealerDetailById(dealer.getId()).get();
+		for(CarModel car : dealer.getListCar()) {
+			car.setDealer(dealerSkrg);
+			carService.addCar(car);
+		}
+		model.addAttribute("title", "Add Car");
+
+		return "add";
+	}
+	
+	@RequestMapping(value = "/car/add/{dealerId}", params= {"addRow"}, method = RequestMethod.POST)
+	private String addRow (@ModelAttribute DealerModel dealer, Model model) {
+		dealer.getListCar().add(new CarModel());
+		model.addAttribute("dealer", dealer);
 		
-		model.addAttribute("title", "Add Car "+dealerId);
+		model.addAttribute("title", "Add Car");
+
 		
 		return "addCar";
 	}
 	
-	@RequestMapping(value = "/car/add", method = RequestMethod.POST)
-	private String addCarSubmit(@ModelAttribute CarModel car, Model model) {
-		carService.addCar(car);
+	@RequestMapping(value="/car/add/{dealerId}", params={"removeRow"}, method=RequestMethod.POST)
+	public String removeRow(@ModelAttribute DealerModel dealer, Model model, HttpServletRequest req) {
+		int rowIndex = Integer.parseInt(req.getParameter("removeRow"));
+		dealer.getListCar().remove(rowIndex);
+		
+		model.addAttribute("dealer", dealer);
 		
 		model.addAttribute("title", "Add Car");
 		
-		return "add";
+		return "addCar";		
 	}
 	
 	@RequestMapping(value = "/car/delete", method = RequestMethod.POST)
@@ -68,9 +99,7 @@ public class CarController {
 			carService.updateCar(id, brand, type, price, amount);
 			
 			model.addAttribute("title", "Update Car " +id);
-			
-			model.addAttribute("title", "Update Car "+id);
-			
+						
 			return "update";
 		}
 		model.addAttribute("title", "Error");
